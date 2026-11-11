@@ -1,6 +1,13 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
+
+// បង្កើត Type សម្រាប់ទិន្នន័យកញ្ចប់
+type Package = {
+  id: string;
+  name: string;
+  price: string;
+};
 
 export default function TopUpPage({ params }: { params: { gameId: string } }) {
   const gameId = params.gameId;
@@ -11,25 +18,48 @@ export default function TopUpPage({ params }: { params: { gameId: string } }) {
   };
   const gameName = gameNames[gameId] || 'Game';
 
-  const packages = [
-    { id: '1', name: '100 Diamonds', price: '$1.00' },
-    { id: '2', name: '310 Diamonds', price: '$3.00' },
-    { id: '3', name: '520 Diamonds', price: '$5.00' },
-    { id: '4', name: '1060 Diamonds', price: '$10.00' },
-    { id: '5', name: '2180 Diamonds', price: '$20.00' },
-    { id: '6', name: '5600 Diamonds', price: '$50.00' },
-  ];
-
+  // ប្តូរពី State ក្លែងក្លាយ មកប្រើ State ទទេវិញ
+  const [packages, setPackages] = useState<Package[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [selectedPack, setSelectedPack] = useState<string | null>(null);
   const [playerId, setPlayerId] = useState('');
   const [zoneId, setZoneId] = useState('');
 
+  // ទាញទិន្នន័យពី API ពេលទំព័រដំណើរការ
+  useEffect(() => {
+    async function fetchPackages() {
+      try {
+        const res = await fetch(`/api/products?game=${gameId}`);
+        const data = await res.json();
+        
+        if (data.success && data.offers) {
+          // បម្លែងទម្រង់ទិន្នន័យពី FazerCards មកជាទម្រង់របស់យើង
+          const formattedPackages = data.offers.map((offer: any) => ({
+            id: offer.id.toString(),
+            name: offer.name || offer.title, 
+            price: `$${offer.price}`,
+          }));
+          setPackages(formattedPackages);
+        }
+      } catch (error) {
+        console.error("Error fetching packages:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchPackages();
+  }, [gameId]);
+
   return (
     <div className="relative min-h-screen py-12">
-      {/* Background Effects */}
       <div className="anime-bg">
-        <div className="glow-orb orb-1"></div>
-        <div className="glow-orb orb-2"></div>
+        <div className="smoke smoke-1"></div>
+        <div className="smoke smoke-2"></div>
+        <div className="smoke smoke-3"></div>
+        {Array.from({ length: 20 }).map((_, i) => (
+          <div key={i} className="snow" style={{ left: `${Math.random() * 100}%`, width: `${Math.random() * 5 + 2}px`, height: `${Math.random() * 5 + 2}px`, animationDuration: `${Math.random() * 5 + 5}s`, animationDelay: `${Math.random() * 5}s` }} />
+        ))}
       </div>
 
       <div className="max-w-3xl mx-auto px-4 relative z-10">
@@ -45,7 +75,6 @@ export default function TopUpPage({ params }: { params: { gameId: string } }) {
           </div>
 
           <div className="p-8 space-y-10">
-            {/* ផ្នែកបញ្ចូល ID */}
             <div className="space-y-5">
               <h2 className="text-xl font-bold text-white flex items-center gap-2">
                  <span className="bg-cyan-500 text-slate-900 w-6 h-6 rounded-full flex items-center justify-center text-sm">1</span> 
@@ -76,31 +105,40 @@ export default function TopUpPage({ params }: { params: { gameId: string } }) {
               )}
             </div>
 
-            {/* ផ្នែកជ្រើសរើសកញ្ចប់ */}
             <div className="space-y-5">
               <h2 className="text-xl font-bold text-white flex items-center gap-2">
                 <span className="bg-cyan-500 text-slate-900 w-6 h-6 rounded-full flex items-center justify-center text-sm">2</span> 
                 ជ្រើសរើសកញ្ចប់តម្លៃ
               </h2>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                {packages.map((pack) => (
-                  <button
-                    key={pack.id}
-                    onClick={() => setSelectedPack(pack.id)}
-                    className={`p-5 rounded-xl border-2 text-left transition-all duration-200 relative overflow-hidden btn-animate ${
-                      selectedPack === pack.id 
-                        ? 'border-cyan-400 bg-cyan-400/10 shadow-[0_0_15px_rgba(34,211,238,0.3)]' 
-                        : 'border-slate-600 hover:border-cyan-500/50 bg-slate-800/50'
-                    }`}
-                  >
-                    <div className={`font-bold text-sm sm:text-base ${selectedPack === pack.id ? 'text-cyan-300' : 'text-gray-200'}`}>{pack.name}</div>
-                    <div className={`font-black mt-2 text-xl ${selectedPack === pack.id ? 'text-white' : 'text-gray-400'}`}>{pack.price}</div>
-                  </button>
-                ))}
-              </div>
+              
+              {/* បង្ហាញពេលកំពុងទាញទិន្នន័យ */}
+              {isLoading ? (
+                <div className="text-center py-10">
+                  <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-cyan-500 mx-auto mb-4"></div>
+                  <p className="text-gray-400">កំពុងទាញទិន្នន័យកញ្ចប់...</p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                  {packages.length > 0 ? packages.map((pack) => (
+                    <button
+                      key={pack.id}
+                      onClick={() => setSelectedPack(pack.id)}
+                      className={`p-5 rounded-xl border-2 text-left transition-all duration-200 relative overflow-hidden btn-animate ${
+                        selectedPack === pack.id 
+                          ? 'border-cyan-400 bg-cyan-400/10 shadow-[0_0_15px_rgba(34,211,238,0.3)]' 
+                          : 'border-slate-600 hover:border-cyan-500/50 bg-slate-800/50'
+                      }`}
+                    >
+                      <div className={`font-bold text-sm sm:text-base ${selectedPack === pack.id ? 'text-cyan-300' : 'text-gray-200'}`}>{pack.name}</div>
+                      <div className={`font-black mt-2 text-xl ${selectedPack === pack.id ? 'text-white' : 'text-gray-400'}`}>{pack.price}</div>
+                    </button>
+                  )) : (
+                    <p className="text-red-400 col-span-3 text-center">មិនមានកញ្ចប់តម្លៃសម្រាប់ហ្គេមនេះទេ (សូមពិនិត្យ API)</p>
+                  )}
+                </div>
+              )}
             </div>
 
-            {/* ប៊ូតុងទូទាត់ប្រាក់ */}
             <div className="pt-6 border-t border-slate-700">
               <div className="flex justify-between items-center mb-6">
                 <span className="text-gray-400 font-medium">តម្លៃសរុប</span>
