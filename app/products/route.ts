@@ -10,12 +10,13 @@ export async function GET(request: Request) {
     return NextResponse.json({ success: false, error: 'រកមិនឃើញ API Key' }, { status: 500 });
   }
 
-  // ប្តូរទៅជា free_fire_sg ព្រោះ Region គឺ SG
+  // សាកល្បងឈ្មោះផ្សេងៗគ្នាសម្រាប់ Free Fire (ដោយសារតំបន់ SG)
   let categoryId = '';
-  if (gameId === 'free-fire') categoryId = 'free_fire_sg'; 
+  if (gameId === 'free-fire') categoryId = 'free_fire_sg'; // អាចជា free_fire_sg ឬ free_fire
   if (gameId === 'mobile-legends') categoryId = 'mobile_legends';
 
   try {
+    // ហៅ API ទាញយក Offers
     const response = await fetch(`https://api.fzr.cards/api/v2/topups/offers?category_id=${categoryId}`, {
       method: 'GET',
       headers: {
@@ -27,14 +28,15 @@ export async function GET(request: Request) {
 
     const data = await response.json();
 
+    // ប្រសិនបើ FazerCards បដិសេធ (ខ្វះកញ្ចប់ ឬឈ្មោះខុស)
     if (!response.ok) {
       return NextResponse.json({ 
         success: false, 
-        error: `FazerCards បដិសេធ: ${data.message || JSON.stringify(data)}` 
+        error: `បញ្ហា API: ${data.message || 'សូមពិនិត្យ Category ID'}` 
       }, { status: response.status });
     }
 
-    // ពិនិត្យមើលថាតើទិន្នន័យកញ្ចប់ស្ថិតនៅ Key ណា (offers ឬ data)
+    // ពិនិត្យមើលថាតើកញ្ចប់ស្ថិតនៅក្នុង Key ណា (offers ឬ data)
     const offersList = data.offers || data.data || data;
     
     return NextResponse.json({ success: true, offers: offersList });
