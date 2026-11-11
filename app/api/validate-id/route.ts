@@ -33,16 +33,20 @@ export async function POST(request: Request) {
 
     const data = await response.json();
 
-    // បង្ហាញទិន្នន័យទាំងអស់ដែល FazerCards ផ្ញើមក (ដើម្បី Debug)
-    const debugInfo = JSON.stringify(data);
+    if (!response.ok || data.ok === false) {
+      return NextResponse.json({ 
+        success: false, 
+        error: `ID មិនត្រឹមត្រូវ ឬមិនគាំទ្រ` 
+      }, { status: 400 });
+    }
 
+    // ទាញយកឈ្មោះពី Key ឈ្មោះថា "nickname"
     return NextResponse.json({ 
       success: true, 
-      // បង្ហាញទិន្នន័យទាំងអស់ ដើម្បីឱ្យយើងឃើញឈ្មោះវានៅឯណា
-      nickname: `ទិន្នន័យពី API: ${debugInfo}` 
+      nickname: data.nickname || 'រកឃើញ ID (គ្មានឈ្មោះ)' 
     });
 
   } catch (error: any) {
-    return NextResponse.json({ success: false, error: `បញ្ហា: ${error.message}` }, { status: 500 });
+    return NextResponse.json({ success: false, error: `បញ្ហាបណ្តាញ` }, { status: 500 });
   }
 }
