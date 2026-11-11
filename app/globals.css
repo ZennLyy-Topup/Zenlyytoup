@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;600;700;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -5,6 +7,60 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: #f9fafb;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: 'Kantumruy Pro', sans-serif; /* ប្រើពុម្ពអក្សរខ្មែរស្អាតៗ */
+  background-color: #0f172a; /* ពណ៌ខៀវចាស់បែប Gaming */
+  color: #f8fafc;
+  overflow-x: hidden;
+}
+
+/* បង្កើត Effect ផ្ទៃខាងក្រោយបែប Anime Glow */
+.anime-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  background: radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.15), transparent 25%),
+              radial-gradient(circle at 85% 30%, rgba(168, 85, 247, 0.15), transparent 25%);
+}
+
+/* ចលនាពន្លឺរសាត់ (Particles) */
+.glow-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(40px);
+  animation: float 8s infinite ease-in-out alternate;
+}
+
+.orb-1 {
+  width: 300px; height: 300px;
+  background: rgba(56, 189, 248, 0.3);
+  top: -50px; left: -50px;
+}
+
+.orb-2 {
+  width: 400px; height: 400px;
+  background: rgba(192, 38, 211, 0.2);
+  bottom: -100px; right: -100px;
+  animation-delay: -3s;
+}
+
+@keyframes float {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(30px, 50px) scale(1.1); }
+  100% { transform: translate(-20px, 20px) scale(0.9); }
+}
+
+/* ប៊ូតុងមានចលនាពេលចុច */
+.btn-animate {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-animate:active {
+  transform: scale(0.95); /* រួញតូចបន្តិចពេលចុច */
+}
+
+.btn-animate:hover {
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.5); /* មានពន្លឺភ្លឺពេលដាក់កូនកណ្តុរ */
 }
