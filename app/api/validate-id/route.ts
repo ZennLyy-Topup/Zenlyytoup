@@ -8,16 +8,13 @@ export async function POST(request: Request) {
     const apiKey = process.env.FAZERCARDS_API_KEY;
 
     if (!apiKey) {
-      return NextResponse.json({ error: 'រកមិនឃើញ API Key' }, { status: 500 });
+      return NextResponse.json({ success: false, error: 'រកមិនឃើញ API Key ក្នុង Vercel Environment Variables' }, { status: 500 });
     }
 
-    // កំណត់ category_id សម្រាប់ការផ្ទៀងផ្ទាត់ (Validation Namespace)
-    // យោងតាមឯកសារ FazerCards ឈ្មោះសម្រាប់ការផ្ទៀងផ្ទាត់គឺខុសពីការលក់
     let validateCategory = '';
-    if (gameId === 'free-fire') validateCategory = 'free_fire';
+    if (gameId === 'free-fire') validateCategory = 'free_fire'; // ឬ free_fire_cis អាស្រ័យលើតំបន់
     if (gameId === 'mobile-legends') validateCategory = 'mobile_legends';
 
-    // រៀបចំ fields តាមហ្គេម
     const fields: Record<string, string> = { player_id: playerId };
     if (gameId === 'mobile-legends' && zoneId) {
       fields.zone_id = zoneId;
@@ -38,12 +35,20 @@ export async function POST(request: Request) {
 
     const data = await response.json();
 
+    // បង្ហាញ Error ឱ្យច្បាស់ពី FazerCards
     if (!response.ok) {
-      return NextResponse.json({ error: 'ID មិនត្រឹមត្រូវ ឬមានបញ្ហា', details: data }, { status: response.status });
+      return NextResponse.json({ 
+        success: false, 
+        error: `FazerCards Error: ${data.message || data.error || 'ID មិនត្រឹមត្រូវ ឬមិនគាំទ្រតំបន់នេះ'}`,
+        details: data 
+      }, { status: response.status });
     }
 
-    return NextResponse.json({ success: true, nickname: data.nickname || data.name || data.data?.nickname });
-  } catch (error) {
-    return NextResponse.json({ error: 'មានបញ្ហាក្នុងការផ្ទៀងផ្ទាត់' }, { status: 500 });
+    // ព្យាយាមយកឈ្មោះពីទម្រង់ផ្សេងៗគ្នាដែល FazerCards អាចតបមក
+    const nickname = data.nickname || data.name || data.data?.nickname || data.data?.name;
+
+    return NextResponse.json({ success: true, nickname: nickname || 'រកឃើញ ID ត្រឹមត្រូវ' });
+  } catch (error: any) {
+    return NextResponse.json({ success: false, error: `បញ្ហាបណ្តាញ: ${error.message}` }, { status: 500 });
   }
 }
