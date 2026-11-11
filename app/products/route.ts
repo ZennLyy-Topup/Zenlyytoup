@@ -10,10 +10,9 @@ export async function GET(request: Request) {
     return NextResponse.json({ success: false, error: 'រកមិនឃើញ API Key' }, { status: 500 });
   }
 
-  // សូមប្តូរឈ្មោះ category នេះឱ្យត្រូវនឹងតំបន់ដែលអ្នកចង់លក់
-  // ឧទាហរណ៍៖ free_fire_cis ឬ free_fire_global
+  // សាកល្បងជាមួយឈ្មោះ Category ផ្សេងៗគ្នា
   let categoryId = '';
-  if (gameId === 'free-fire') categoryId = 'free_fire_cis'; 
+  if (gameId === 'free-fire') categoryId = 'free_fire_cis'; // ឬ free_fire_global
   if (gameId === 'mobile-legends') categoryId = 'mobile_legends';
 
   try {
@@ -29,13 +28,14 @@ export async function GET(request: Request) {
     const data = await response.json();
 
     if (!response.ok) {
-      return NextResponse.json({ success: false, error: 'មានបញ្ហាក្នុងការទាញទិន្នន័យកញ្ចប់', details: data }, { status: response.status });
+      // បង្ហាញ Error ពី FazerCards ឱ្យបានច្បាស់
+      return NextResponse.json({ 
+        success: false, 
+        error: `FazerCards បដិសេធ: ${data.message || JSON.stringify(data)}` 
+      }, { status: response.status });
     }
 
-    // ពិនិត្យមើលថាតើ FazerCards តបទិន្នន័យមកក្នុង Key ណា (offers ឬ data)
-    const offers = data.offers || data.data || data;
-
-    return NextResponse.json({ success: true, offers: offers });
+    return NextResponse.json({ success: true, offers: data.data || data.offers || data });
 
   } catch (error: any) {
     return NextResponse.json({ success: false, error: `បញ្ហាបណ្តាញ: ${error.message}` }, { status: 500 });

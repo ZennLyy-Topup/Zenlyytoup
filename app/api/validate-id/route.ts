@@ -8,7 +8,7 @@ export async function POST(request: Request) {
     const apiKey = process.env.FAZERCARDS_API_KEY;
 
     if (!apiKey) {
-      return NextResponse.json({ success: false, error: 'រកមិនឃើញ API Key ក្នុងប្រព័ន្ធ' }, { status: 500 });
+      return NextResponse.json({ success: false, error: 'រកមិនឃើញ API Key' }, { status: 500 });
     }
 
     let validateCategory = '';
@@ -16,9 +16,7 @@ export async function POST(request: Request) {
     if (gameId === 'mobile-legends') validateCategory = 'mobile_legends';
 
     const fields: Record<string, string> = { player_id: playerId };
-    if (gameId === 'mobile-legends' && zoneId) {
-      fields.zone_id = zoneId;
-    }
+    if (gameId === 'mobile-legends' && zoneId) fields.zone_id = zoneId;
 
     const response = await fetch('https://api.fzr.cards/api/v2/topups/validate-id', {
       method: 'POST',
@@ -35,31 +33,16 @@ export async function POST(request: Request) {
 
     const data = await response.json();
 
-    if (!response.ok) {
-      return NextResponse.json({ 
-        success: false, 
-        error: `FazerCards បដិសេធ: ${data.message || data.error || 'ID មិនត្រឹមត្រូវ ឬតំបន់មិនគាំទ្រ'}`,
-        details: data 
-      }, { status: response.status });
-    }
+    // បង្ហាញទិន្នន័យទាំងអស់ដែល FazerCards ផ្ញើមក (ដើម្បី Debug)
+    const debugInfo = JSON.stringify(data);
 
-    // ស្វែងរកឈ្មោះពីគ្រប់ទម្រង់ដែលអាចមាន
-    const nickname = 
-      data.nickname || 
-      data.username || 
-      data.ign || 
-      data.data?.nickname || 
-      data.data?.username || 
-      data.data?.ign ||
-      data.result?.nickname;
-
-    // ប្រសិនបើរកមិនឃើញឈ្មោះទេ បង្ហាញពាក្យថា "រកឃើញ ID (គ្មានឈ្មោះ)"
     return NextResponse.json({ 
       success: true, 
-      nickname: nickname || 'រកឃើញ ID (គ្មានឈ្មោះបង្ហាញ)' 
+      // បង្ហាញទិន្នន័យទាំងអស់ ដើម្បីឱ្យយើងឃើញឈ្មោះវានៅឯណា
+      nickname: `ទិន្នន័យពី API: ${debugInfo}` 
     });
 
   } catch (error: any) {
-    return NextResponse.json({ success: false, error: `បញ្ហាបណ្តាញ: ${error.message}` }, { status: 500 });
+    return NextResponse.json({ success: false, error: `បញ្ហា: ${error.message}` }, { status: 500 });
   }
 }
