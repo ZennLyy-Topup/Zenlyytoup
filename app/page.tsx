@@ -1,34 +1,24 @@
 import Link from 'next/link'
+import Image from 'next/image'
 
 export default function Home() {
+  // លុប PUBG និង Genshin ចេញ និងដាក់តំណភ្ជាប់រូបភាព (Logo)
   const games = [
     {
       id: 'free-fire',
       name: 'Free Fire',
       description: 'Top up Diamonds សម្រាប់ Free Fire រហ័សទាន់ចិត្ត',
-      color: 'from-orange-400 to-red-500',
-      icon: '🔥'
+      color: 'bg-orange-100', // ពណ៌ផ្ទៃខាងក្រោយសម្រាប់ Logo
+      // ដាក់តំណភ្ជាប់រូបភាព Logo Free Fire នៅទីនេះ
+      image: 'https://upload.wikimedia.org/wikipedia/en/thumb/9/9c/Garena_Free_Fire_logo.svg/1200px-Garena_Free_Fire_logo.svg.png'
     },
     {
       id: 'mobile-legends',
       name: 'Mobile Legends',
       description: 'Top up Diamonds សម្រាប់ MLBB ដោយគ្មានភ្ញាក់ផ្អើល',
-      color: 'from-blue-400 to-indigo-600',
-      icon: '⚔️'
-    },
-    {
-      id: 'pubg-mobile',
-      name: 'PUBG Mobile',
-      description: 'Top up UC សម្រាប់ PUBG Mobile',
-      color: 'from-yellow-400 to-orange-600',
-      icon: '🎯'
-    },
-    {
-      id: 'genshin-impact',
-      name: 'Genshin Impact',
-      description: 'Top up Genesis Crystals',
-      color: 'from-teal-400 to-emerald-600',
-      icon: '✨'
+      color: 'bg-blue-50', // ពណ៌ផ្ទៃខាងក្រោយសម្រាប់ Logo
+      // ដាក់តំណភ្ជាប់រូបភាព Logo Mobile Legends នៅទីនេះ
+      image: 'https://upload.wikimedia.org/wikipedia/en/thumb/8/8b/Mobile_Legends_Bang_Bang_logo.png/220px-Mobile_Legends_Bang_Bang_logo.png'
     }
   ];
 
@@ -40,21 +30,27 @@ export default function Home() {
           សេវាកម្ម Top Up ហ្គេម <span className="text-blue-600">លឿន និងទុកចិត្ត</span>
         </h1>
         <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-          បញ្ចូល Diamonds និង UC ដោយស្វ័យប្រវត្តិក្នុងរយៈពេលតែប៉ុន្មាននាទីប៉ុណ្ណោះ។ ទូទាត់ប្រាក់តាម ABA និង ACLEDA។
+          បញ្ចូល Diamonds ដោយស្វ័យប្រវត្តិក្នុងរយៈពេលតែប៉ុន្មាននាទីប៉ុណ្ណោះ។ ទូទាត់ប្រាក់តាម ABA និង ACLEDA។
         </p>
       </div>
 
       {/* Game Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-4xl mx-auto">
         {games.map((game) => (
           <Link 
             key={game.id} 
             href={`/topup/${game.id}`}
             className="group relative bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 flex flex-col"
           >
-            <div className={`h-40 bg-gradient-to-br ${game.color} flex items-center justify-center relative overflow-hidden`}>
-               <span className="text-6xl opacity-50 group-hover:scale-110 transition-transform duration-300">{game.icon}</span>
+            {/* ផ្នែកបង្ហាញរូបភាព Logo */}
+            <div className={`h-48 ${game.color} flex items-center justify-center p-6 relative overflow-hidden`}>
+               <img 
+                  src={game.image} 
+                  alt={`${game.name} logo`}
+                  className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-300 drop-shadow-md"
+               />
             </div>
+            
             <div className="p-6 flex-grow flex flex-col">
               <h2 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
                 {game.name}
