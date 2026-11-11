@@ -6,8 +6,8 @@ export default function Home() {
       id: 'free-fire',
       name: 'Free Fire',
       description: 'Top up Diamonds សម្រាប់ Free Fire រហ័សទាន់ចិត្ត',
-   
-      video: '/images/freefire.mp4', // បើមានវីដេអូ
+     image: '/images/freefire.png',
+      
       glow: 'group-hover:shadow-orange-500/50'
     },
     {
@@ -15,7 +15,7 @@ export default function Home() {
       name: 'Mobile Legends',
       description: 'Top up Diamonds សម្រាប់ MLBB រហ័សទាន់ចិត្ត',
       image: '/images/mlbb.png',
-      video:  '/images/' ,
+      
       glow: 'group-hover:shadow-blue-500/50'
     }
   ];
@@ -30,7 +30,7 @@ export default function Home() {
         <div className="smoke smoke-3"></div>
 
         {/* Effect ព្រិលធ្លាក់ (បង្កើតព្រិលចៃដន្យ 20 ដុំ) */}
-        {Array.from({ length: 20 }).map((_, i) => (
+        {Array.from({ length: 50 }).map((_, i) => (
           <div
             key={i}
             className="snow"
