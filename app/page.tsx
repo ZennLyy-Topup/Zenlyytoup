@@ -5,17 +5,17 @@ export default function Home() {
     {
       id: 'free-fire',
       name: 'Free Fire',
-      description: 'Top up Diamonds សម្រាប់ Free Fire រហ័សទាន់ចិត្ត',
-     image: '/images/freefire.png',
-      
+      description: 'Top-up Diamonds💎 សម្រាប់ Free Fire រហ័សទាន់ចិត្ត',
+      image: '/image/freefire.png',
+      video: 'https://cdn.pixabay.com/video/2020/08/12/46727-449923742_tiny.mp4', // បើមានវីដេអូ
       glow: 'group-hover:shadow-orange-500/50'
     },
     {
       id: 'mobile-legends',
       name: 'Mobile Legends',
-      description: 'Top up Diamonds សម្រាប់ MLBB រហ័សទាន់ចិត្ត',
+      description: 'Top-up Diamonds💎 សម្រាប់ MLBB រហ័សទាន់ចិត្ត',
       image: '/images/mlbb.png',
-      
+      video: 'https://cdn.pixabay.com/video/2023/03/28/156287-812486876_tiny.mp4', // បើមានវីដេអូ
       glow: 'group-hover:shadow-blue-500/50'
     }
   ];
@@ -48,7 +48,7 @@ export default function Home() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10">
         <div className="text-center mb-20">
           <h1 className="text-4xl md:text-6xl font-black mb-6 tracking-tight drop-shadow-lg">
-            សេវាកម្ម Top Up ហ្គេម <br className="hidden md:block"/>
+            សេវាកម្ម Top-Up ហ្គេម <br className="hidden md:block"/>
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">
               លឿន និងទុកចិត្ត
             </span>
