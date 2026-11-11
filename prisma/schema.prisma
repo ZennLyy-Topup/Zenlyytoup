@@ -1,0 +1,48 @@
+// schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ១. តារាងអ្នកប្រើប្រាស់ (Users)
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  role      String   @default("USER") // USER ឬ ADMIN
+  createdAt DateTime @default(now())
+  orders    Order[]
+}
+
+// ២. តារាងផលិតផល/ហ្គេម (Products)
+model Product {
+  id          String   @id @default(uuid())
+  name        String   // ឧទាហរណ៍៖ "Free Fire 100 Diamonds"
+  game        String   // ឧទាហរណ៍៖ "Free Fire" ឬ "Mobile Legends"
+  price       Float    // តម្លៃលក់ជាដុល្លារ ឬរៀល
+  providerId  String   // ID ពី FazerCards (ឧទាហរណ៍៖ offer_id)
+  categoryId  String   // ID ពី FazerCards (ឧទាហរណ៍៖ free_fire_auto)
+  isActive    Boolean  @default(true)
+  orders      Order[]
+}
+
+// ៣. តារាងការបញ្ជាទិញ (Orders)
+model Order {
+  id            String   @id @default(uuid())
+  userId        String
+  productId     String
+  playerId      String   // ID អ្នកលេងហ្គេម
+  zoneId        String?  // សម្រាប់ Mobile Legends (អាចទទេបានបើ Free Fire)
+  totalAmount   Float
+  status        String   @default("PENDING") // PENDING, PAID, COMPLETED, FAILED
+  paymentRef    String?  // លេខ Ref ពី ABA PayWay
+  createdAt     DateTime @default(now())
+  
+  user          User     @relation(fields: [userId], references: [id])
+  product       Product  @relation(fields: [productId], references: [id])
+}
