@@ -10,8 +10,8 @@ export async function GET(request: Request) {
     return NextResponse.json({ success: false, error: 'រកមិនឃើញ API Key' }, { status: 500 });
   }
 
-  // បញ្ជីឈ្មោះ Category ដែលអាចទៅរួចសម្រាប់ការសាកល្បង
-  let possibleCategories = [];
+  // បន្ថែម : string[] ដើម្បីកំណត់ប្រភេទទិន្នន័យឱ្យ TypeScript ដឹង
+  let possibleCategories: string[] = [];
   
   if (gameId === 'free-fire') {
     possibleCategories = ['free_fire_sg', 'free_fire_global', 'free_fire'];
@@ -19,7 +19,7 @@ export async function GET(request: Request) {
     possibleCategories = ['mobile_legends', 'mobile_legends_global'];
   }
 
-  let finalOffers = null;
+  let finalOffers: any[] | null = null; // កំណត់ប្រភេទទិន្នន័យសម្រាប់ finalOffers
   let lastError = '';
 
   // រត់រកមើលគ្រប់ឈ្មោះ រហូតឃើញកញ្ចប់
@@ -46,7 +46,7 @@ export async function GET(request: Request) {
       } else {
         lastError = data.message || JSON.stringify(data);
       }
-    } catch (e) {
+    } catch (e: any) {
       lastError = 'បញ្ហាបណ្តាញ';
     }
   }
