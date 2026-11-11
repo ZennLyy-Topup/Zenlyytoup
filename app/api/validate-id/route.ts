@@ -8,10 +8,9 @@ export async function POST(request: Request) {
     const apiKey = process.env.FAZERCARDS_API_KEY;
 
     if (!apiKey) {
-      return NextResponse.json({ success: false, error: 'រកមិនឃើញ API Key ក្នុង Vercel' }, { status: 500 });
+      return NextResponse.json({ success: false, error: 'រកមិនឃើញ API Key' }, { status: 500 });
     }
 
-    // កំណត់ Category សម្រាប់ការផ្ទៀងផ្ទាត់
     let validateCategory = 'free_fire';
     if (gameId === 'mobile-legends') validateCategory = 'mobile_legends';
 
@@ -36,11 +35,11 @@ export async function POST(request: Request) {
     if (!response.ok || data.ok === false) {
       return NextResponse.json({ 
         success: false, 
-        error: data.message || 'ID មិនត្រឹមត្រូវ ឬមានបញ្ហា' 
+        error: data.message || 'ID មិនត្រឹមត្រូវ' 
       }, { status: 400 });
     }
 
-    // ទាញយកឈ្មោះតាម Key ដែលយើងបានឃើញពី Debug មុននេះ
+    // ទាញយកឈ្មោះពី data.nickname ដោយផ្ទាល់
     return NextResponse.json({ 
       success: true, 
       nickname: data.nickname || 'រកឃើញ ID ត្រឹមត្រូវ' 
