@@ -10,15 +10,15 @@ export default function Home() {
       description: 'Top up Diamonds សម្រាប់ Free Fire រហ័សទាន់ចិត្ត',
       color: 'bg-orange-100', // ពណ៌ផ្ទៃខាងក្រោយសម្រាប់ Logo
       // ដាក់តំណភ្ជាប់រូបភាព Logo Free Fire នៅទីនេះ
-      image: 'https://upload.wikimedia.org/wikipedia/en/thumb/9/9c/Garena_Free_Fire_logo.svg/1200px-Garena_Free_Fire_logo.svg.png'
+      image: '/images/freefire.png'
     },
     {
       id: 'mobile-legends',
       name: 'Mobile Legends',
-      description: 'Top up Diamonds សម្រាប់ MLBB ដោយគ្មានភ្ញាក់ផ្អើល',
+      description: 'Top up Diamonds សម្រាប់ MLBB រហ័សទាន់ចិត្ត',
       color: 'bg-blue-50', // ពណ៌ផ្ទៃខាងក្រោយសម្រាប់ Logo
       // ដាក់តំណភ្ជាប់រូបភាព Logo Mobile Legends នៅទីនេះ
-      image: 'https://upload.wikimedia.org/wikipedia/en/thumb/8/8b/Mobile_Legends_Bang_Bang_logo.png/220px-Mobile_Legends_Bang_Bang_logo.png'
+      image: '/images/mlbb.png'
     }
   ];
 
