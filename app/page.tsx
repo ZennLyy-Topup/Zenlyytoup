@@ -15,7 +15,7 @@ export default function Home() {
       name: 'Mobile Legends',
       description: 'Top up Diamonds សម្រាប់ MLBB រហ័សទាន់ចិត្ត',
       image: '/images/mlbb.png',
-      video:  '/images/
+      video:  '/images/' ,
       glow: 'group-hover:shadow-blue-500/50'
     }
   ];
