@@ -6,15 +6,16 @@ export default function Home() {
       id: 'free-fire',
       name: 'Free Fire',
       description: 'Top up Diamonds សម្រាប់ Free Fire រហ័សទាន់ចិត្ត',
-      // ខ្ញុំដាក់រូបភាពគំរូឱ្យ អ្នកអាចប្តូរតាមចិត្ត
-      image: '/images/freefire.png', 
+      image: '/images/freefire.png',
+      video: 'https://cdn.pixabay.com/video/2020/08/12/46727-449923742_tiny.mp4', // បើមានវីដេអូ
       glow: 'group-hover:shadow-orange-500/50'
     },
     {
       id: 'mobile-legends',
       name: 'Mobile Legends',
-      description: 'Top up Diamonds សម្រាប់ MLBB ដោយគ្មានភ្ញាក់ផ្អើល',
+      description: 'Top up Diamonds សម្រាប់ MLBB រហ័សទាន់ចិត្ត',
       image: '/images/mlbb.png',
+      video: 'https://cdn.pixabay.com/video/2023/03/28/156287-812486876_tiny.mp4', // បើមានវីដេអូ
       glow: 'group-hover:shadow-blue-500/50'
     }
   ];
@@ -23,13 +24,29 @@ export default function Home() {
     <div className="relative min-h-screen">
       {/* Background Effects */}
       <div className="anime-bg">
-        <div className="glow-orb orb-1"></div>
-        <div className="glow-orb orb-2"></div>
+        {/* Effect ផ្សែងពណ៌ */}
+        <div className="smoke smoke-1"></div>
+        <div className="smoke smoke-2"></div>
+        <div className="smoke smoke-3"></div>
+
+        {/* Effect ព្រិលធ្លាក់ (បង្កើតព្រិលចៃដន្យ 20 ដុំ) */}
+        {Array.from({ length: 20 }).map((_, i) => (
+          <div
+            key={i}
+            className="snow"
+            style={{
+              left: `${Math.random() * 100}%`,
+              width: `${Math.random() * 5 + 2}px`,
+              height: `${Math.random() * 5 + 2}px`,
+              animationDuration: `${Math.random() * 5 + 5}s`,
+              animationDelay: `${Math.random() * 5}s`,
+            }}
+          />
+        ))}
       </div>
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10">
-        {/* Hero Section */}
-        <div className="text-center mb-20 animate-fade-in">
+        <div className="text-center mb-20">
           <h1 className="text-4xl md:text-6xl font-black mb-6 tracking-tight drop-shadow-lg">
             សេវាកម្ម Top Up ហ្គេម <br className="hidden md:block"/>
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">
@@ -41,7 +58,6 @@ export default function Home() {
           </p>
         </div>
 
-        {/* Game Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 max-w-4xl mx-auto">
           {games.map((game) => (
             <Link 
@@ -49,14 +65,26 @@ export default function Home() {
               href={`/topup/${game.id}`}
               className={`group relative bg-slate-800/80 backdrop-blur-md rounded-2xl border border-slate-700 shadow-xl hover:shadow-2xl ${game.glow} transition-all duration-300 overflow-hidden flex flex-col btn-animate`}
             >
-              <div className="h-56 bg-slate-900 flex items-center justify-center p-4 relative overflow-hidden">
+              <div className="h-56 bg-slate-900 flex items-center justify-center relative overflow-hidden">
+                 
+                 {/* វីដេអូផ្ទៃខាងក្រោយ */}
+                 <video 
+                   autoPlay 
+                   loop 
+                   muted 
+                   playsInline 
+                   className="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-60 transition-opacity duration-500"
+                 >
+                   <source src={game.video} type="video/mp4" />
+                 </video>
+
+                 <div className="absolute inset-0 bg-black/30 z-0"></div>
+
                  <img 
                     src={game.image} 
                     alt={`${game.name} logo`}
-                    className="max-h-full max-w-full object-contain group-hover:scale-110 transition-transform duration-500 drop-shadow-2xl z-10"
+                    className="max-h-[70%] max-w-[70%] object-contain relative z-10 group-hover:scale-110 transition-transform duration-500 drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]"
                  />
-                 {/* ពន្លឺភ្លឺពីក្រោយរូបភាព */}
-                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
               
               <div className="p-6 flex-grow flex flex-col relative bg-gradient-to-t from-slate-800 to-slate-800/50">

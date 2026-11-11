@@ -7,13 +7,13 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Kantumruy Pro', sans-serif; /* ប្រើពុម្ពអក្សរខ្មែរស្អាតៗ */
-  background-color: #0f172a; /* ពណ៌ខៀវចាស់បែប Gaming */
+  font-family: 'Kantumruy Pro', sans-serif;
+  background-color: #0f172a; /* ផ្ទៃខាងក្រោយខៀវចាស់ */
   color: #f8fafc;
   overflow-x: hidden;
 }
 
-/* បង្កើត Effect ផ្ទៃខាងក្រោយបែប Anime Glow */
+/* ផ្ទៃខាងក្រោយមូលដ្ឋាន */
 .anime-bg {
   position: fixed;
   top: 0;
@@ -21,46 +21,72 @@ body {
   width: 100vw;
   height: 100vh;
   z-index: -1;
-  background: radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.15), transparent 25%),
-              radial-gradient(circle at 85% 30%, rgba(168, 85, 247, 0.15), transparent 25%);
+  background: radial-gradient(circle at 50% 0%, #1e293b 0%, #0f172a 100%);
+  overflow: hidden;
 }
 
-/* ចលនាពន្លឺរសាត់ (Particles) */
-.glow-orb {
+/* =========================================
+   EFFECT ព្រិលធ្លាក់ (Snowfall)
+   ========================================= */
+.snow {
   position: absolute;
+  top: -10px;
+  background: white;
   border-radius: 50%;
-  filter: blur(40px);
-  animation: float 8s infinite ease-in-out alternate;
+  opacity: 0.8;
+  filter: blur(1px);
+  animation: fall linear infinite;
 }
 
-.orb-1 {
+@keyframes fall {
+  0% { transform: translateY(-10px) translateX(0); }
+  100% { transform: translateY(100vh) translateX(20px); }
+}
+
+/* =========================================
+   EFFECT ផ្សែងពណ៌ហុយឡើងលើ (Color Smoke/Glow)
+   ========================================= */
+.smoke {
+  position: absolute;
+  bottom: -100px;
+  border-radius: 50%;
+  filter: blur(50px);
+  opacity: 0.3;
+  animation: riseUp 10s infinite ease-in-out alternate;
+}
+
+.smoke-1 {
   width: 300px; height: 300px;
-  background: rgba(56, 189, 248, 0.3);
-  top: -50px; left: -50px;
+  background: #3b82f6; /* ពណ៌ខៀវ */
+  left: 10%;
+  animation-delay: 0s;
 }
 
-.orb-2 {
+.smoke-2 {
   width: 400px; height: 400px;
-  background: rgba(192, 38, 211, 0.2);
-  bottom: -100px; right: -100px;
+  background: #a855f7; /* ពណ៌ស្វាយ */
+  right: 5%;
   animation-delay: -3s;
+  animation-duration: 14s;
 }
 
-@keyframes float {
-  0% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(30px, 50px) scale(1.1); }
-  100% { transform: translate(-20px, 20px) scale(0.9); }
+.smoke-3 {
+  width: 250px; height: 250px;
+  background: #06b6d4; /* ពណ៌ខៀវខ្ចី */
+  left: 40%;
+  animation-delay: -7s;
+  animation-duration: 12s;
+}
+
+@keyframes riseUp {
+  0% { transform: translateY(0) scale(1) translateX(0); opacity: 0.1; }
+  50% { transform: translateY(-200px) scale(1.2) translateX(30px); opacity: 0.3; }
+  100% { transform: translateY(-400px) scale(1.5) translateX(-30px); opacity: 0; }
 }
 
 /* ប៊ូតុងមានចលនាពេលចុច */
 .btn-animate {
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
-.btn-animate:active {
-  transform: scale(0.95); /* រួញតូចបន្តិចពេលចុច */
-}
-
-.btn-animate:hover {
-  box-shadow: 0 0 20px rgba(59, 130, 246, 0.5); /* មានពន្លឺភ្លឺពេលដាក់កូនកណ្តុរ */
-}
+.btn-animate:active { transform: scale(0.95); }
+.btn-animate:hover { box-shadow: 0 0 20px rgba(59, 130, 246, 0.5); }
