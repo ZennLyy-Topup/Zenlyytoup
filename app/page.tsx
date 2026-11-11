@@ -6,7 +6,7 @@ export default function Home() {
       id: 'free-fire',
       name: 'Free Fire',
       description: 'Top up Diamonds សម្រាប់ Free Fire រហ័សទាន់ចិត្ត',
-      image: '/images/freefire.png',
+   
       video: '/images/freefire.mp4', // បើមានវីដេអូ
       glow: 'group-hover:shadow-orange-500/50'
     },
