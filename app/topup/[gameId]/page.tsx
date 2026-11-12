@@ -3,18 +3,11 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
-type Package = {
-  id: string;
-  name: string;
-  price: string;
-};
+type Package = { id: string; name: string; price: string; };
 
 export default function TopUpPage({ params }: { params: { gameId: string } }) {
   const gameId = params.gameId;
-  const gameNames: Record<string, string> = {
-    'free-fire': 'Free Fire',
-    'mobile-legends': 'Mobile Legends',
-  };
+  const gameNames: Record<string, string> = { 'free-fire': 'Free Fire', 'mobile-legends': 'Mobile Legends' };
   const gameName = gameNames[gameId] || 'Game';
 
   const [packages, setPackages] = useState<Package[]>([]);
@@ -32,21 +25,20 @@ export default function TopUpPage({ params }: { params: { gameId: string } }) {
       try {
         const res = await fetch(`/api/products?game=${gameId}`);
         const data = await res.json();
+        
         if (data.success && data.offers && data.offers.length > 0) {
-          setPackages(
-            data.offers.map((offer: any) => ({
-              id: offer.id?.toString() || offer.sku,
-              name: offer.name || offer.title,
-              price: `$${offer.price || offer.amount}`,
-            }))
-          );
+          setPackages(data.offers.map((offer: any) => ({
+            id: offer.id?.toString() || offer.sku,
+            name: offer.name || offer.title,
+            price: `$${offer.price || offer.amount}`,
+          })));
         } else {
-          setPackageError(data.error || 'មិនមានកញ្ចប់តម្លៃសម្រាប់ហ្គេមនេះទេ (សូមពិនិត្យ Category ID)');
+          setPackageError(data.error || 'មិនមានកញ្ចប់តម្លៃសម្រាប់ហ្គេមនេះទេ');
         }
-      } catch (error: any) {
-        setPackageError('មិនអាចទាញទិន្នន័យកញ្ចប់បានទេ');
-      } finally {
-        setIsLoading(false);
+      } catch (error: any) { 
+        setPackageError('មិនអាចទាញទិន្នន័យបានទេ'); 
+      } finally { 
+        setIsLoading(false); 
       }
     }
     fetchPackages();
@@ -57,6 +49,7 @@ export default function TopUpPage({ params }: { params: { gameId: string } }) {
     setIsValidating(true);
     setValidationError('');
     setNickname(null);
+    
     try {
       const res = await fetch('/api/validate-id', {
         method: 'POST',
@@ -64,13 +57,14 @@ export default function TopUpPage({ params }: { params: { gameId: string } }) {
         body: JSON.stringify({ gameId, playerId, zoneId }),
       });
       const data = await res.json();
+      
       if (data.success) {
         setNickname(data.nickname);
       } else {
-        setValidationError(data.error || 'ID មិនត្រឹមត្រូវ ឬមានបញ្ហា');
+        setValidationError(data.error || 'ID មិនត្រឹមត្រូវ');
       }
     } catch (e) {
-      setValidationError('មានបញ្ហាក្នុងការភ្ជាប់ទៅ Server');
+      setValidationError('មានបញ្ហាក្នុងការភ្ជាប់');
     } finally {
       setIsValidating(false);
     }
@@ -78,7 +72,6 @@ export default function TopUpPage({ params }: { params: { gameId: string } }) {
 
   return (
     <div className="relative min-h-screen py-12">
-      {/* Background Effects */}
       <div className="anime-bg">
         <div className="smoke smoke-1"></div>
         <div className="smoke smoke-2"></div>
@@ -100,7 +93,6 @@ export default function TopUpPage({ params }: { params: { gameId: string } }) {
           </div>
 
           <div className="p-8 space-y-10">
-            {/* ផ្នែកបញ្ចូល ID */}
             <div className="space-y-5">
               <h2 className="text-xl font-bold text-white flex items-center gap-2">
                 <span className="bg-cyan-500 text-slate-900 w-6 h-6 rounded-full flex items-center justify-center text-sm">1</span>
@@ -163,7 +155,6 @@ export default function TopUpPage({ params }: { params: { gameId: string } }) {
               )}
             </div>
 
-            {/* ផ្នែកជ្រើសរើសកញ្ចប់ */}
             <div className="space-y-5">
               <h2 className="text-xl font-bold text-white flex items-center gap-2">
                 <span className="bg-cyan-500 text-slate-900 w-6 h-6 rounded-full flex items-center justify-center text-sm">2</span>
@@ -201,7 +192,6 @@ export default function TopUpPage({ params }: { params: { gameId: string } }) {
               )}
             </div>
 
-            {/* ប៊ូតុងទូទាត់ប្រាក់ */}
             <div className="pt-6 border-t border-slate-700">
               <div className="flex justify-between items-center mb-6">
                 <span className="text-gray-400 font-medium">តម្លៃសរុប</span>
