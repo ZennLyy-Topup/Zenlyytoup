@@ -1,8 +1,11 @@
+// app/login/page.tsx
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
+  const router = useRouter();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -19,12 +22,16 @@ export default function LoginPage() {
 
     setIsLoading(true);
 
-    // កន្លែងនេះជាកន្លែងដែលយើងនឹងភ្ជាប់ទៅ Database នៅពេលក្រោយ
+    // ការពិនិត្យសាមញ្ញ (ក្រោយមកយើងនឹងភ្ជាប់ Database)
     setTimeout(() => {
+      // រក្សាទុកឈ្មោះអ្នកប្រើក្នុង Cookie រយៈពេល ១ ថ្ងៃ
+      document.cookie = `username=${username}; path=/; max-age=86400`;
+      
       setIsLoading(false);
-      alert('ចូលគណនីបានជោគជ័យ!');
-      // router.push('/'); // បញ្ជូនទៅទំព័រដើមវិញ
-    }, 1500);
+      alert(`សូមស្វាគមន៍ ${username}! អ្នកបានចូលគណនីដោយជោគជ័យ។`);
+      router.push('/');
+      router.refresh(); // Refresh ដើម្បីឱ្យ Navbar ដឹងថាមានអ្នក Login
+    }, 1000);
   };
 
   return (
@@ -50,20 +57,20 @@ export default function LoginPage() {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder="បំពេញឈ្មោះអ្នកប្រើ"
-                className="w-full px-5 py-3.5 bg-slate-900/50 border border-slate-600 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all text-white placeholder-gray-500"
+                className="w-full px-5 py-3.5 bg-slate-900/50 border border-slate-600 rounded-xl focus:ring-2 focus:ring-cyan-500 outline-none transition-all text-white placeholder-gray-500"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">Password</label>
+              <label className="block text-sm font-medium text-gray-300 mb-2">Password (៦ ខ្ទង់)</label>
               <input 
                 type="password" 
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="បំពេញលេខសម្ងាត់ ៦ ខ្ទង់"
+                placeholder="បំពេញលេខសម្ងាត់"
                 maxLength={6}
-                className="w-full px-5 py-3.5 bg-slate-900/50 border border-slate-600 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all text-white placeholder-gray-500 tracking-widest"
+                className="w-full px-5 py-3.5 bg-slate-900/50 border border-slate-600 rounded-xl focus:ring-2 focus:ring-cyan-500 outline-none transition-all text-white placeholder-gray-500 tracking-widest"
                 required
               />
             </div>
@@ -73,14 +80,14 @@ export default function LoginPage() {
               disabled={isLoading}
               className="w-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-bold py-4 rounded-xl hover:from-blue-500 hover:to-cyan-400 transition-all duration-300 shadow-[0_0_20px_rgba(34,211,238,0.3)] btn-animate mt-4 disabled:opacity-50"
             >
-              {isLoading ? 'កំពុងចូល...' : 'ចូលគណនី'}
+              {isLoading ? 'ក ចំពុងចូល...' : 'ចូលគណនី'}
             </button>
-          </form>
+         ុ </form>
 
           <div className="mt-8 text-center text-sm text-gray-400">
-            មិនទាន់មានគណនីមែនទេ?{' '}
+            មិនទាន់មានគណនះឈីមែនទេ?្ម{' '}
             <Link href="/register" className="text-cyan-400 font-bold hover:underline">
-              ចុះឈ្មោះឥឡូវនេះ
+             ោះឥឡូវនេះ
             </Link>
           </div>
         </div>

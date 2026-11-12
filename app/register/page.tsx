@@ -1,3 +1,4 @@
+// app/register/page.tsx
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
@@ -14,13 +15,11 @@ export default function RegisterPage() {
     e.preventDefault();
     setError('');
 
-    // ត្រួតពិនិត្យឈ្មោះអ្នកប្រើ
     if (username.length < 3) {
       setError('ឈ្មោះអ្នកប្រើត្រូវមានយ៉ាងតិច ៣ តួអក្សរ');
       return;
     }
 
-    // ត្រួតពិនិត្យលេខសម្ងាត់ ៦ ខ្ទង់
     if (password.length !== 6) {
       setError('លេខសម្ងាត់ត្រូវតែមាន ៦ ខ្ទង់ពិតប្រាកដ');
       return;
@@ -28,12 +27,11 @@ export default function RegisterPage() {
 
     setIsLoading(true);
 
-    // កន្លែងនេះជាកន្លែងដែលយើងនឹងភ្ជាប់ទៅ Database នៅពេលក្រោយ
     setTimeout(() => {
       setIsLoading(false);
       alert('ចុះឈ្មោះបានជោគជ័យ! សូមចូលគណនីរបស់អ្នក។');
-      router.push('/login'); // បញ្ជូនទៅទំព័រ Login
-    }, 1500);
+      router.push('/login');
+    }, 1000);
   };
 
   return (
@@ -59,7 +57,7 @@ export default function RegisterPage() {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder="បង្កើតឈ្មោះអ្នកប្រើ"
-                className="w-full px-5 py-3.5 bg-slate-900/50 border border-slate-600 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all text-white placeholder-gray-500"
+                className="w-full px-5 py-3.5 bg-slate-900/50 border border-slate-600 rounded-xl focus:ring-2 focus:ring-cyan-500 outline-none transition-all text-white placeholder-gray-500"
                 required
               />
             </div>
@@ -72,7 +70,7 @@ export default function RegisterPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="បំពេញលេខសម្ងាត់"
                 maxLength={6}
-                className="w-full px-5 py-3.5 bg-slate-900/50 border border-slate-600 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all text-white placeholder-gray-500 tracking-widest"
+                className="w-full px-5 py-3.5 bg-slate-900/50 border border-slate-600 rounded-xl focus:ring-2 focus:ring-cyan-500 outline-none transition-all text-white placeholder-gray-500 tracking-widest"
                 required
               />
             </div>
