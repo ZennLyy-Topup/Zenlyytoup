@@ -8,85 +8,112 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Kantumruy Pro', sans-serif;
-  background-color: #0f172a; /* ផ្ទៃខាងក្រោយខៀវចាស់ */
+  background-color: #050B14; /* ពណ៌ខៀវចាស់បែបអវកាស */
   color: #f8fafc;
   overflow-x: hidden;
 }
 
-/* ផ្ទៃខាងក្រោយមូលដ្ឋាន */
-.anime-bg {
+/* =========================================
+   EFFECT ផ្ទៃខាងក្រោយ 4D (Aurora & Particles)
+   ========================================= */
+.bg-4d {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
   z-index: -1;
-  background: radial-gradient(circle at 50% 0%, #1e293b 0%, #0f172a 100%);
+  background: radial-gradient(circle at 50% 0%, #1e293b 0%, #050B14 100%);
   overflow: hidden;
 }
 
-/* =========================================
-   EFFECT ព្រិលធ្លាក់ (Snowfall)
-   ========================================= */
-.snow {
+/* ពន្លឺពណ៌រសាត់ (Aurora Glow) */
+.aurora {
   position: absolute;
-  top: -10px;
-  background: white;
   border-radius: 50%;
-  opacity: 0.8;
-  filter: blur(1px);
+  filter: blur(80px);
+  opacity: 0.5;
+  animation: float 15s infinite alternate ease-in-out;
+}
+
+.aurora-1 {
+  width: 500px; height: 500px;
+  background: #3b82f6; /* ខៀវ */
+  top: -100px; left: -100px;
+}
+
+.aurora-2 {
+  width: 600px; height: 600px;
+  background: #8b5cf6; /* ស្វាយ */
+  bottom: -200px; right: -100px;
+  animation-delay: -5s;
+}
+
+.aurora-3 {
+  width: 400px; height: 400px;
+  background: #06b6d4; /* ខៀវខ្ចី */
+  top: 40%; left: 40%;
+  animation-delay: -10s;
+}
+
+@keyframes float {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(50px, 50px) scale(1.1); }
+  100% { transform: translate(-50px, -50px) scale(0.9); }
+}
+
+/* ពេជ្រធ្លាក់មក (Diamond Falling Effect) */
+.diamond {
+  position: absolute;
+  top: -20px;
+  width: 12px;
+  height: 12px;
+  background: linear-gradient(135deg, #67e8f9, #3b82f6);
+  transform: rotate(45deg);
+  opacity: 0;
   animation: fall linear infinite;
+  box-shadow: 0 0 10px #3b82f6;
 }
 
 @keyframes fall {
-  0% { transform: translateY(-10px) translateX(0); }
-  100% { transform: translateY(100vh) translateX(20px); }
+  0% { transform: translateY(-20px) rotate(45deg); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(100vh) rotate(405deg); opacity: 0; }
 }
 
 /* =========================================
-   EFFECT ផ្សែងពណ៌ហុយឡើងលើ (Color Smoke/Glow)
+   EFFECT អក្សរ 4D (Text Effects)
    ========================================= */
-.smoke {
-  position: absolute;
-  bottom: -100px;
-  border-radius: 50%;
-  filter: blur(50px);
-  opacity: 0.3;
-  animation: riseUp 10s infinite ease-in-out alternate;
+.text-4d {
+  /* ស្រមោលអក្សរធ្វើឱ្យវាលេចចេញមកមុខ (3D Pop) */
+  text-shadow: 
+    0px 1px 0px #cccccc,
+    0px 2px 0px #c0c0c0,
+    0px 3px 0px #b0b0b0,
+    0px 4px 0px #a0a0a0,
+    0px 5px 10px rgba(0,0,0,0.6);
 }
 
-.smoke-1 {
-  width: 300px; height: 300px;
-  background: #3b82f6; /* ពណ៌ខៀវ */
-  left: 10%;
-  animation-delay: 0s;
+.text-glow-cyan {
+  text-shadow: 0 0 10px rgba(34, 211, 238, 0.8), 0 0 20px rgba(34, 211, 238, 0.5);
 }
 
-.smoke-2 {
-  width: 400px; height: 400px;
-  background: #a855f7; /* ពណ៌ស្វាយ */
-  right: 5%;
-  animation-delay: -3s;
-  animation-duration: 14s;
+/* =========================================
+   EFFECT ប៊ូតុង 4D
+   ========================================= */
+.btn-4d {
+  position: relative;
+  transition: all 0.1s ease;
+  box-shadow: 0 6px 0px #1e3a8a, 0 10px 10px rgba(0,0,0,0.5);
+  transform: translateY(0);
 }
 
-.smoke-3 {
-  width: 250px; height: 250px;
-  background: #06b6d4; /* ពណ៌ខៀវខ្ចី */
-  left: 40%;
-  animation-delay: -7s;
-  animation-duration: 12s;
+.btn-4d:active {
+  box-shadow: 0 0px 0px #1e3a8a, 0 2px 5px rgba(0,0,0,0.5);
+  transform: translateY(6px); /* ចុចហើយរួញចូល */
 }
 
-@keyframes riseUp {
-  0% { transform: translateY(0) scale(1) translateX(0); opacity: 0.1; }
-  50% { transform: translateY(-200px) scale(1.2) translateX(30px); opacity: 0.3; }
-  100% { transform: translateY(-400px) scale(1.5) translateX(-30px); opacity: 0; }
+.btn-4d:hover {
+  filter: brightness(1.2);
 }
-
-/* ប៊ូតុងមានចលនាពេលចុច */
-.btn-animate {
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.btn-animate:active { transform: scale(0.95); }
-.btn-animate:hover { box-shadow: 0 0 20px rgba(59, 130, 246, 0.5); }
